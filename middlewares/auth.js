@@ -45,7 +45,6 @@ dotenv.config();
 
 const authMiddleware = async (req, res, next) => {
     const token =  req.headers.authorization?.split(" ")[1]; 
-    console.log(req.headers);
     
   
   if (!token) {
@@ -54,7 +53,7 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded._id).select("-password");
 
     if (!user) {
