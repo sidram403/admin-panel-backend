@@ -83,7 +83,7 @@ exports.loginUser = async (req, res) => {
     
         const token = createToken({ _id: user._id, role: user.role });
         setCookie(res, token);
-        res.json({ user: { email: user.email, fullName: user.fullName, role: user.role } });
+        res.json({ token, user: { email: user.email, fullName: user.fullName, role: user.role } });
       } catch (error) {
         res.status(400).json({ error: error.message });
       }
