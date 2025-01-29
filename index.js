@@ -32,9 +32,8 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const cancellationRoutes = require('./routes/cancellationRoutes');
 
 // Middleware
-app.use(cors(
-  {
-  origin: "http://localhost:5173",  // Allow frontend URL
+app.use(cors({
+  origin: "https://admin-panel-37l9.vercel.app",  // Allow frontend URL
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,  // Allow cookies with requests
 }
