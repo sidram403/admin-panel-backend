@@ -32,11 +32,13 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const cancellationRoutes = require('./routes/cancellationRoutes');
 
 // Middleware
-app.use(cors({
+app.use(cors(
+  {
   origin: "http://localhost:5173",  // Allow frontend URL
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,  // Allow cookies with requests
-}));
+}
+));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());

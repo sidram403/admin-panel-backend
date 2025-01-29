@@ -30,7 +30,18 @@ exports.registerUser = async (req, res) => {
             employmentStatus
         });
         await user.save();
-        res.status(201).json({ message: "User created successfully" });
+        // Send the created user details in the response
+        res.status(201).json({
+            message: "User created successfully",
+            user: {
+                id: user._id,
+                fullName: user.fullName,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                employmentStatus: user.employmentStatus,
+                role:user.role
+            }
+        });
     } catch (error) {
         res.status(500).json({ message: "Error creating user", error });
     }
@@ -110,7 +121,18 @@ exports.updateUser = async (req, res) => {
 
 
 exports.authenticated = async (req, res) => {
-    res.json(req.user);
+    // The `req.user` is set by the `authMiddleware`.
+    console.log("auth");
+    
+    try {
+      res.status(200).json({
+        email: req.user.email,
+        fullName: req.user.fullName,
+        role: req.user.role,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error });
+    }
   };
 // exports.generateOtp = async (req, res) => {
 //     const { mobile } = req.body;

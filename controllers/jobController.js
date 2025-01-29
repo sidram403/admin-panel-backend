@@ -2,6 +2,7 @@ const Job = require('../models/Job');
 const Shift = require('../models/Shift');
 const  Application = require('../models/Application');
 const Notification = require('../models/Notification');
+const Stats = require('../models/Stats');
 
 exports.createJob = async (req, res) => {
   try {
@@ -119,6 +120,12 @@ exports.getJobById = async (req, res) => {
         0
       ) - applications.length;
 
+    const totalStandBy =   
+    (jobsData.shifts || []).reduce(
+      (acc, shift) => acc + (shift.standbyVacancy || 0),
+      0
+    ) - applications.length;
+
     // Format the response
     const response = {
       _id: jobsData._id,
@@ -134,6 +141,7 @@ exports.getJobById = async (req, res) => {
       dates: jobsData.dates,
       shifts: jobsData.shifts,
       totalVacancy: totalVacancy >= 0 ? totalVacancy : 0,
+      totalStandby : totalStandBy>=0 ? totalStandBy : 0
     };
 
     res.status(200).json(response);
@@ -420,14 +428,18 @@ exports.cancelJob = async (req, res) => {
     );
     if (!cancelledJob) return res.status(404).json({ error: 'Job not found' });
 
-    // Now delete the job from the database
-    await Job.findByIdAndDelete(jobId);
+ 
+   await Job.findByIdAndDelete(jobId);
 
-    res.status(200).json(cancelledJob);
+   // Return the canceled job details (optional)
+   res.status(200).json(cancelledJob);
+
   } catch (err) {
     res.status(500).json({ error: 'Failed to cancel job', details: err.message });
   }
 };
+
+
 
 //for qr
 exports.getUserJobs = async (req, res) => {
@@ -466,3 +478,4 @@ exports.getCancelledJobs = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch cancelled jobs', details: error.message });
   }
 };
+

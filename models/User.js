@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
     phoneNumber: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: false },
-    employmentStatus: { type: String, enum: ["Student", "Singapore/PR", "Singapore/LTVP"], required: true },
+    employmentStatus: { type: String, enum: ["Student", "Singapore/PR", "Singapore/LTVP","Admin"], required: true },
     profileCompleted: { type: Boolean, default: false },
     profileId: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
     applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }],
